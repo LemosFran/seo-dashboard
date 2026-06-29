@@ -188,22 +188,19 @@ export default function App() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          model: "claude-sonnet-4-6",
-          max_tokens: 4000,
-          system: "You are an SEO expert. Respond ONLY with a raw JSON object. No markdown fences, no explanation. Start with { and end with }.",
-          messages: [{ role: "user", content: PROMPT(clean, t.promptLang) }]
+          prompt: PROMPT(clean, t.promptLang)
         })
       });
-
+      
       clearInterval(ticker);
-
+      
       if (!res.ok) {
         const e = await res.json().catch(() => ({}));
-        throw new Error(e?.error?.message || `HTTP ${res.status}`);
+        throw new Error(e?.error || `HTTP ${res.status}`);
       }
-
-      const json   = await res.json();
-      const raw    = (json.content || []).filter(b => b.type === "text").map(b => b.text).join("");
+      
+      const json = await res.json();
+      const raw = json.text || "";
       const cleaned = raw.replace(/^```(?:json)?\s*/i, "").replace(/\s*```\s*$/, "").trim();
       const si = cleaned.indexOf("{");
       const ei = cleaned.lastIndexOf("}");
@@ -211,8 +208,8 @@ export default function App() {
       if (si !== -1 && ei !== -1) {
         try { parsed = JSON.parse(cleaned.slice(si, ei + 1)); } catch (_) {}
       }
-      if (!parsed) throw new Error(`Parse failed. Response started with: ${raw.slice(0, 150) || "(empty)"}`);
-
+      if (!parsed) throw new Error(`Parse failed. Response: ${raw.slice(0, 150) || "(empty)"}`);
+      
       setData({ ...parsed, url: clean });
       setStatus("done");
     } catch (err) {
