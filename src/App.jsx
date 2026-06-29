@@ -16,49 +16,49 @@ const D = {
 const T = {
   en:{
     headerTitle:"SEO Audit",
-    headerSub:"AI-powered analysis · Claude",
+    headerSub:"AI-powered analysis · Gemini",
     inputLabel:"Website URL",
     placeholder:"https://www.yourwebsite.com",
     btnRun:"Run Audit", btnRunning:"Analyzing…",
     steps:["Analyzing domain & platform","Auditing SEO signals","Reviewing design & structure","Identifying conversion gaps","Compiling recommendations"],
     loading:"Running audit…",
     emptyTitle:"Enter a URL to get started",
-    emptyDesc:"Claude will analyze your site like a senior SEO specialist and return a structured report with prioritized recommendations.",
+    emptyDesc:"Gemini will analyze your site like a senior SEO specialist and return a structured report with prioritized recommendations.",
     platform:"Platform", auditDone:"Audit complete", score:"SEO Score", outOf:"/ 100",
     secSEO:"SEO Issues & Opportunities", secDesign:"Design Improvements",
     convBadge:"Conversion Focus", convTitle:"Revenue-Driving Improvement Opportunities",
     secStruct:"Page Structure", secWins:"Quick Wins",
-    footer:"Powered by Claude AI",
+    footer:"Powered by Gemini AI",
     promptLang:"English",
   },
   es:{
     headerTitle:"Auditoría SEO",
-    headerSub:"Análisis con IA · Claude",
+    headerSub:"Análisis con IA · Gemini",
     inputLabel:"URL del sitio web",
     placeholder:"https://www.tusitio.com",
     btnRun:"Ejecutar Auditoría", btnRunning:"Analizando…",
     steps:["Analizando dominio y plataforma","Auditando señales SEO","Revisando diseño y estructura","Identificando brechas de conversión","Compilando recomendaciones"],
     loading:"Ejecutando auditoría…",
     emptyTitle:"Ingresa una URL para comenzar",
-    emptyDesc:"Claude analizará tu sitio como un especialista SEO senior y entregará un reporte estructurado con recomendaciones priorizadas.",
+    emptyDesc:"Gemini analizará tu sitio como un especialista SEO senior y entregará un reporte estructurado con recomendaciones priorizadas.",
     platform:"Plataforma", auditDone:"Auditoría completa", score:"Puntuación SEO", outOf:"/ 100",
     secSEO:"Problemas y Oportunidades SEO", secDesign:"Mejoras de Diseño",
     convBadge:"Enfoque en Conversión", convTitle:"Oportunidades que Generan Ingresos",
     secStruct:"Estructura de Página", secWins:"Victorias Rápidas",
-    footer:"Desarrollado con Claude AI",
+    footer:"Desarrollado con Gemini AI",
     promptLang:"Spanish",
   },
 };
 
 const PROMPT = (url, lang) =>
-`Audit this website as a senior SEO and conversion specialist: ${url}
+`You are a senior SEO specialist and conversion expert. Audit this website: ${url}
 
-Respond with ONLY a JSON object. No markdown, no fences, no text before or after. Just valid JSON.
-All user-facing text fields must be in ${lang}.
+Respond with ONLY a valid JSON object. No markdown, no code fences, no explanation before or after. Start with { and end with }.
+All user-facing text fields must be written in ${lang}.
 
-Required structure (fill in real values, keep keys in English):
+Use this exact structure:
 {
-  "platform": "detected CMS in English",
+  "platform": "detected CMS in English e.g. WordPress / Squarespace / Shopify / Custom",
   "overall_score": 68,
   "score_color": "yellow",
   "metrics": [
@@ -106,11 +106,16 @@ Required structure (fill in real values, keep keys in English):
   ]
 }
 
-Rules: overall_score integer 0-100. score_color: green(80+)/yellow(50-79)/red(<50).
-Be SPECIFIC to ${url} — mention the actual domain and industry. Descriptions max 20 words each.
-Return ONLY the JSON object.`;
+Rules:
+- overall_score: integer 0-100
+- score_color: "green" if 80+, "yellow" if 50-79, "red" if below 50
+- status values must be one of: good, warn, bad, info
+- priority values must be one of: critical, high, medium, low
+- Be SPECIFIC to ${url} — mention the actual domain name and industry
+- Keep descriptions under 20 words each
+- Return ONLY the JSON object, nothing else`;
 
-// ─── helpers ─────────────────────────────────────────────────────────────────
+// ─── helpers ──────────────────────────────────────────────────────────────────
 const statusMeta = {
   good:[D.green,D.greenBg,D.greenBd],
   warn:[D.yellow,D.yellowBg,D.yellowBd],
@@ -161,7 +166,7 @@ const MonoTag = ({ children }) => (
   </span>
 );
 
-// ─── App ─────────────────────────────────────────────────────────────────────
+// ─── App ──────────────────────────────────────────────────────────────────────
 export default function App() {
   const [lang,setLang]     = useState("en");
   const [url,setUrl]       = useState("");
@@ -182,34 +187,31 @@ export default function App() {
     const ticker = setInterval(() => setStep(i => Math.min(i + 1, t.steps.length - 1)), 1800);
 
     try {
-      // Calls our serverless function in /api/audit.js
-      // which securely forwards to Anthropic using ANTHROPIC_API_KEY env var
       const res = await fetch("/api/audit", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          prompt: PROMPT(clean, t.promptLang)
-        })
+        body: JSON.stringify({ prompt: PROMPT(clean, t.promptLang) })
       });
-      
+
       clearInterval(ticker);
-      
+
       if (!res.ok) {
         const e = await res.json().catch(() => ({}));
         throw new Error(e?.error || `HTTP ${res.status}`);
       }
-      
-      const json = await res.json();
-      const raw = json.text || "";
+
+      const json    = await res.json();
+      const raw     = json.text || "";
       const cleaned = raw.replace(/^```(?:json)?\s*/i, "").replace(/\s*```\s*$/, "").trim();
-      const si = cleaned.indexOf("{");
-      const ei = cleaned.lastIndexOf("}");
-      let parsed = null;
+      const si      = cleaned.indexOf("{");
+      const ei      = cleaned.lastIndexOf("}");
+      let parsed    = null;
+
       if (si !== -1 && ei !== -1) {
         try { parsed = JSON.parse(cleaned.slice(si, ei + 1)); } catch (_) {}
       }
-      if (!parsed) throw new Error(`Parse failed. Response: ${raw.slice(0, 150) || "(empty)"}`);
-      
+      if (!parsed) throw new Error(`Parse failed. Response: ${raw.slice(0, 200) || "(empty)"}`);
+
       setData({ ...parsed, url: clean });
       setStatus("done");
     } catch (err) {
@@ -235,13 +237,13 @@ export default function App() {
         .run-btn:hover:not(:disabled) { background: ${D.brandDark} !important; }
         .run-btn:disabled { opacity: .5; cursor: not-allowed; }
         .win-row:hover { background: #F9FAFB !important; }
-        .grid-6  { display:grid; grid-template-columns:repeat(6,1fr); gap:10px; margin-bottom:14px; }
-        .grid-2  { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:14px; }
+        .grid-6   { display:grid; grid-template-columns:repeat(6,1fr); gap:10px; margin-bottom:14px; }
+        .grid-2   { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:14px; }
         .grid-conv { display:grid; grid-template-columns:1fr 1fr; }
         .input-row { display:flex; gap:10px; }
         @media (max-width: 720px) {
-          .grid-6   { grid-template-columns: repeat(3,1fr) !important; }
-          .grid-2   { grid-template-columns: 1fr !important; }
+          .grid-6    { grid-template-columns: repeat(3,1fr) !important; }
+          .grid-2    { grid-template-columns: 1fr !important; }
           .grid-conv { grid-template-columns: 1fr !important; }
         }
         @media (max-width: 420px) {
@@ -250,7 +252,7 @@ export default function App() {
         }
       `}</style>
 
-      {/* ── TOPBAR ── */}
+      {/* TOPBAR */}
       <div style={{background:D.white,borderBottom:`1px solid ${D.border}`,padding:"0 20px",
         height:54,display:"flex",alignItems:"center",justifyContent:"space-between",
         position:"sticky",top:0,zIndex:10,gap:12}}>
@@ -264,7 +266,6 @@ export default function App() {
           </div>
         </div>
 
-        {/* Language toggle */}
         <div style={{display:"flex",background:"#F3F4F6",border:`1px solid ${D.border}`,
           borderRadius:D.radMd,padding:3,gap:2,flexShrink:0}}>
           {[["en","🇺🇸","EN"],["es","🇪🇸","ES"]].map(([l,flag,label]) => (
@@ -272,7 +273,7 @@ export default function App() {
               background: lang===l ? D.white : "transparent",
               color: lang===l ? D.text : D.textSub,
               border: lang===l ? `1px solid ${D.border}` : "1px solid transparent",
-              borderRadius: D.radSm, padding:"4px 10px", fontSize:12, fontWeight:600,
+              borderRadius:D.radSm, padding:"4px 10px", fontSize:12, fontWeight:600,
               cursor:"pointer", fontFamily:"inherit", transition:"all .15s",
               boxShadow: lang===l ? "0 1px 2px rgba(0,0,0,.07)" : "none",
               display:"flex", alignItems:"center", gap:5, whiteSpace:"nowrap",
@@ -284,7 +285,7 @@ export default function App() {
         </div>
       </div>
 
-      {/* ── PAGE BODY ── */}
+      {/* BODY */}
       <div style={{maxWidth:1080,margin:"0 auto",padding:"24px 16px 80px"}}>
 
         {/* INPUT */}
