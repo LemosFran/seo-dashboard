@@ -24,10 +24,23 @@ export default async function handler(req, res) {
 
     const data = await response.json();
 
-    // Return the FULL raw Gemini response so we can see the structure
-    return res.status(200).json({ debug: data });
+    if (!response.ok) {
+      return res.status(response.status).json({ error: data?.error?.message || "Gemini API error" });
+    }
+
+    // Correct path for Gemini 2.0 response structure
+    const text =
+      data?.candidates?.[0]?.content?.parts?.[0]?.text ||
+      data?.candidates?.[0]?.parts?.[0]?.text ||
+      "";
+
+    if (!text) {
+      return res.status(200).json({ error: "Empty response from Gemini", raw: JSON.stringify(data).slice(0, 500) });
+    }
+
+    return res.status(200).json({ text });
 
   } catch (err) {
-    return res.status(200).json({ error: err.message });
+    return res.status(500).json({ error: err.message || "Internal server error" });
   }
 }
