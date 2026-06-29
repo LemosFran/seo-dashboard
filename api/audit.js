@@ -24,7 +24,11 @@ export default async function handler(req, res) {
 
     const data = await response.json();
 
-    // Extract text from Gemini response format
+    // Gemini error passthrough
+    if (!response.ok) {
+      return res.status(response.status).json({ error: data?.error?.message || "Gemini API error" });
+    }
+
     const text = data?.candidates?.[0]?.content?.parts?.[0]?.text || "";
     return res.status(200).json({ text });
 
