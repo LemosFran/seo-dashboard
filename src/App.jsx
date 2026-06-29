@@ -201,16 +201,19 @@ export default function App() {
       }
 
       const json    = await res.json();
-      const raw     = json.text || "";
-      const cleaned = raw.replace(/^```(?:json)?\s*/i, "").replace(/\s*```\s*$/, "").trim();
-      const si      = cleaned.indexOf("{");
-      const ei      = cleaned.lastIndexOf("}");
-      let parsed    = null;
 
-      if (si !== -1 && ei !== -1) {
-        try { parsed = JSON.parse(cleaned.slice(si, ei + 1)); } catch (_) {}
-      }
-      if (!parsed) throw new Error(`Parse failed. Response: ${raw.slice(0, 200) || "(empty)"}`);
+// Show full raw response in error so we can debug
+const raw     = json.text || JSON.stringify(json);
+
+const cleaned = raw.replace(/^```(?:json)?\s*/i, "").replace(/\s*```\s*$/, "").trim();
+const si      = cleaned.indexOf("{");
+const ei      = cleaned.lastIndexOf("}");
+let parsed    = null;
+
+if (si !== -1 && ei !== -1) {
+  try { parsed = JSON.parse(cleaned.slice(si, ei + 1)); } catch (_) {}
+}
+if (!parsed) throw new Error(`Raw response: ${raw.slice(0, 500)}`);
 
       setData({ ...parsed, url: clean });
       setStatus("done");
