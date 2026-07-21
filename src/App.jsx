@@ -292,7 +292,6 @@ export default function App() {
   return (
     <div style={{ background: DS.bg, minHeight: "100vh", fontFamily: DS.fontUI, color: DS.textPrimary, lineHeight: 1.6 }}>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Libre+Caslon+Condensed:ital,wght@0,400;0,600;1,400;1,600&display=swap');
         @import url('https://fonts.bunny.net/css?family=neue-montreal:400,500,600,700&display=swap');
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         @keyframes spin { to { transform: rotate(360deg); } }
