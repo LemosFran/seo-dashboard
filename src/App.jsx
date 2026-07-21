@@ -1,4 +1,11 @@
 import { useState } from "react";
+import {
+  ArrowRight,
+  Check,
+  GlobeSimple,
+  Lightning,
+  MagnifyingGlass,
+} from "@phosphor-icons/react";
 
 // ── Aurum Studio Design Tokens ─────────────────────────────────────────────
 const DS = {
@@ -88,15 +95,16 @@ function Chip({ type = "status", value }) {
 }
 
 function scoreColor(score, override) {
-  if (override === "green"  || score >= 80) return "#2D7A1F";
-  if (override === "yellow" || score >= 50) return "#7A5A00";
-  return DS.red;
+  // Brighter tones keep the score legible against the dark report header.
+  if (override === "green"  || score >= 80) return "#96FF58";
+  if (override === "yellow" || score >= 50) return "#FFD166";
+  return "#FF7083";
 }
 
 // ── Reusable layout pieces ────────────────────────────────────────────────
 const LightCard = ({ children, style = {} }) => (
   <div style={{
-    background: DS.white, borderRadius: DS.radXl,
+    background: DS.white, borderRadius: DS.radCard,
     boxShadow: DS.shadowCard, border: `1px solid ${DS.stroke}`,
     ...style,
   }}>{children}</div>
@@ -104,7 +112,7 @@ const LightCard = ({ children, style = {} }) => (
 
 const DarkCard = ({ children, style = {} }) => (
   <div style={{
-    background: DS.cardDark, borderRadius: DS.radXl,
+    background: DS.cardDark, borderRadius: DS.radCard,
     border: `1px solid ${DS.accent10}`,
     ...style,
   }}>{children}</div>
@@ -324,8 +332,10 @@ export default function App() {
           <div style={{
             width: 30, height: 30, background: DS.accent24, borderRadius: DS.radSm,
             display: "flex", alignItems: "center", justifyContent: "center",
-            fontSize: 15, flexShrink: 0,
-          }}>🔍</div>
+            color: DS.black, flexShrink: 0,
+          }}>
+            <MagnifyingGlass size={16} weight="bold" />
+          </div>
           
           <div id="logo-meta">
             <div style={{ fontSize: 16, fontWeight: 600, color: DS.textOnDark, fontFamily: DS.fontDisplay, letterSpacing: "-0.02em", height: 20 }}>
@@ -341,14 +351,14 @@ export default function App() {
         {/* Lang toggle */}
         <div style={{
           display: "flex", background: DS.accent12,
-          border: `1px solid ${DS.accent24}`, borderRadius: DS.radPill,
+          border: `1px solid ${DS.accent24}`, borderRadius: DS.radMd,
           padding: 3, gap: 2, flexShrink: 0,
         }}>
-          {[["en","🇺🇸","EN"],["es","🇪🇸","ES"]].map(([l, flag, label]) => (
+          {[["en","EN"],["es","ES"]].map(([l, flag, label]) => (
             <button key={l} className="lang-btn" onClick={() => setLang(l)} style={{
               background: lang === l ? DS.accent : "transparent",
               color: lang === l ? DS.black : DS.textOnDarkMuted,
-              border: "none", borderRadius: DS.radPill,
+              border: "none", borderRadius: DS.radSm,
               padding: "4px 12px", fontSize: 11, fontWeight: 700,
               cursor: "pointer", fontFamily: DS.fontUI,
               transition: "all .15s", display: "flex", alignItems: "center", gap: 5,
@@ -389,7 +399,7 @@ export default function App() {
             />
             <button className="run-btn" onClick={runAudit} disabled={status === "loading"} style={{
               padding: "12px 24px", background: DS.accent, color: DS.black,
-              border: "none", borderRadius: DS.radCard,
+              border: "none", borderRadius: DS.radSm,
               fontSize: 14, fontWeight: 700, cursor: "pointer",
               fontFamily: DS.fontUI, transition: "all .2s",
               whiteSpace: "nowrap", flexShrink: 0, letterSpacing: "-0.01em",
@@ -426,7 +436,7 @@ export default function App() {
                     background: i < step ? DS.accent : "transparent",
                     display: "flex", alignItems: "center", justifyContent: "center",
                   }}>
-                    {i < step  && <span style={{ color: DS.black, fontSize: 9, fontWeight: 700 }}>✓</span>}
+                    {i < step && <Check size={11} weight="bold" color={DS.black} />}
                     {i === step && <div style={{ width: 6, height: 6, borderRadius: "50%", background: DS.black }}/>}
                   </div>
                   <span style={{
@@ -445,9 +455,11 @@ export default function App() {
             <div style={{
               width: 56, height: 56, background: DS.accent24, borderRadius: DS.radLg,
               display: "flex", alignItems: "center", justifyContent: "center",
-              fontSize: 24, margin: "0 auto 16px",
+              margin: "0 auto 16px",
               border: `1px solid ${DS.accent24}`,
-            }}>🌐</div>
+            }}>
+              <GlobeSimple size={24} weight="duotone" color={DS.black} />
+            </div>
             <div style={{
               fontSize: 24, fontWeight: 400, fontStyle: "italic", color: DS.textPrimary,
               marginBottom: 10, fontFamily: DS.fontHeading, letterSpacing: "-0.02em",
@@ -481,7 +493,7 @@ export default function App() {
                 {/* Score badge */}
                 <div style={{
                   display: "flex", alignItems: "center", gap: 14,
-                  background: DS.accent12, border: `1px solid ${DS.accent24}`,
+                  background: "rgba(255,255,255,0.08)", border: `1px solid ${DS.accent35}`,
                   borderRadius: DS.radXl, padding: "14px 22px", flexShrink: 0,
                 }}>
                   <div>
@@ -492,7 +504,7 @@ export default function App() {
                     <div style={{ fontSize: 11, color: DS.textOnDarkMuted, marginTop: 2, fontFamily: DS.fontUI }}>{t.outOf}</div>
                   </div>
                   <div style={{ width: 1, height: 40, background: DS.accent20 }}/>
-                  <div style={{ fontSize: 11, fontWeight: 600, color: DS.textOnDarkMuted, maxWidth: 52, lineHeight: 1.3, fontFamily: DS.fontUI }}>{t.score}</div>
+                  <div style={{ fontSize: 11, fontWeight: 700, color: DS.textOnDark, maxWidth: 52, lineHeight: 1.3, fontFamily: DS.fontUI }}>{t.score}</div>
                 </div>
               </div>
             </DarkCard>
@@ -558,7 +570,8 @@ export default function App() {
                   borderRadius: DS.radPill, padding: "3px 12px",
                   fontSize: 10, fontWeight: 800, letterSpacing: "0.06em",
                   textTransform: "uppercase", fontFamily: DS.fontUI, whiteSpace: "nowrap",
-                }}>⚡ {t.convBadge}</span>
+                  display: "inline-flex", alignItems: "center", gap: 4,
+                }}><Lightning size={13} weight="fill" /> {t.convBadge}</span>
                 <span style={{ fontSize: 16, fontWeight: 600, fontStyle: "italic", color: DS.textOnDark, fontFamily: DS.fontHeading, letterSpacing: "-0.01em" }}>{t.convTitle}</span>
               </div>
               <div className="grid-conv">
@@ -599,7 +612,9 @@ export default function App() {
                       <MonoTag>{st.tag}</MonoTag>
                       <span style={{ fontSize: 13, fontWeight: 500, color: DS.textPrimary, flex: 1, minWidth: 100, fontFamily: DS.fontUI }}>{st.text}</span>
                     </div>
-                    <div style={{ fontSize: 12, color: "#2D7A1F", fontWeight: 600, fontFamily: DS.fontUI }}>→ {st.fix}</div>
+                    <div style={{ fontSize: 12, color: "#2D7A1F", fontWeight: 600, fontFamily: DS.fontUI, display: "flex", alignItems: "center", gap: 4 }}>
+                      <ArrowRight size={13} weight="bold" /> {st.fix}
+                    </div>
                   </div>
                 ))}
               </LightCard>
@@ -619,7 +634,7 @@ export default function App() {
                       flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center",
                       transition: "all .15s",
                     }}>
-                      {checks[i] && <span style={{ color: DS.black, fontSize: 9, fontWeight: 800 }}>✓</span>}
+                      {checks[i] && <Check size={11} weight="bold" color={DS.black} />}
                     </div>
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <div style={{
