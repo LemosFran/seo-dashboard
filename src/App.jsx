@@ -5,6 +5,9 @@ import {
   GlobeSimple,
   Lightning,
   MagnifyingGlass,
+  PaintBrush,
+  TreeStructure,
+  WarningCircle,
 } from "@phosphor-icons/react";
 
 // ── Aurum Studio Design Tokens ─────────────────────────────────────────────
@@ -118,17 +121,26 @@ const DarkCard = ({ children, style = {} }) => (
   }}>{children}</div>
 );
 
-const SecHead = ({ children, light = true, accent = false }) => (
+const SecHead = ({ children, light = true, accent = false, icon: Icon }) => (
   <div style={{
     padding: "14px 20px",
     borderBottom: `1px solid ${light ? DS.stroke : DS.accent10}`,
     display: "flex", alignItems: "center", gap: 8,
   }}>
-    <span style={{
-      width: 6, height: 6, borderRadius: "50%",
-      background: accent ? DS.accent : (light ? DS.black : DS.textOnDarkMuted),
-      flexShrink: 0, display: "inline-block",
-    }}/>
+    {Icon ? (
+      <span style={{
+        width: 24, height: 24, borderRadius: DS.radSm,
+        background: light ? DS.secondary : DS.accent12,
+        color: accent ? DS.accent : (light ? DS.black : DS.textOnDarkMuted),
+        display: "inline-flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
+      }}><Icon size={14} weight="bold" /></span>
+    ) : (
+      <span style={{
+        width: 6, height: 6, borderRadius: "50%",
+        background: accent ? DS.accent : (light ? DS.black : DS.textOnDarkMuted),
+        flexShrink: 0, display: "inline-block",
+      }}/>
+    )}
     <span style={{
       fontSize: 15, fontWeight: 600, fontStyle: "italic", letterSpacing: "-0.01em",
       fontFamily: DS.fontHeading,
@@ -149,7 +161,7 @@ const MonoTag = ({ children }) => (
 // ── Translations ──────────────────────────────────────────────────────────
 const T = {
   en: {
-    headerSub: "AI-powered SEO analysis",
+    headerSub: "AI-powered • by AurumStudio",
     inputLabel: "Website URL",
     placeholder: "https://www.yourwebsite.com",
     btnRun: "Run Audit", btnRunning: "Analyzing…",
@@ -165,7 +177,7 @@ const T = {
     promptLang: "English",
   },
   es: {
-    headerSub: "Análisis SEO con inteligencia artificial",
+    headerSub: "Poteciado con IA • by AurumStudio",
     inputLabel: "URL del sitio web",
     placeholder: "https://www.tusitio.com",
     btnRun: "Ejecutar Auditoría", btnRunning: "Analizando…",
@@ -301,6 +313,14 @@ export default function App() {
         .run-btn:active { transform: translateY(0) !important; }
         .run-btn:disabled { opacity: .5; cursor: not-allowed; }
         .lang-btn:hover { opacity: .8; }
+        .brand-shell { display: flex; align-items: center; height: 34px; }
+        .brand-lockup { display: flex; align-items: center; height: 34px; }
+        .brand-title { display: flex; flex-direction: column; justify-content: center; height: 34px; margin-right: 10px; white-space: nowrap; }
+        .brand-title-main { color: ${DS.textOnDark}; font-size: 15px; font-weight: 700; letter-spacing: -0.04em; line-height: 15px; }
+        .brand-subtitle { margin: 2px 0 0 20px; color: rgba(255,255,255,.76); font-size: 10px; font-weight: 500; letter-spacing: -0.01em; line-height: 10px; }
+        .brand-by { display: flex; align-items: center; height: 34px; margin-right: 8px; color: rgba(255,255,255,.9); font-size: 11px; font-weight: 500; line-height: 1; }
+        .aurum-logo { display: flex; align-items: center; height: 34px; }
+        .aurum-mini { display: block; width: 48px; height: 16px; object-fit: contain; }
         .win-row:hover { background: ${DS.secondary} !important; }
         .url-input:focus { outline: none; border-color: ${DS.accent} !important; box-shadow: 0 0 0 3px ${DS.accent12} !important; }
         .grid-6   { display:grid; grid-template-columns:repeat(6,1fr); gap:12px; margin-bottom:16px; }
@@ -321,29 +341,18 @@ export default function App() {
       {/* ── NAVBAR ── */}
       <nav style={{
         background: DS.black, borderBottom: `1px solid ${DS.accent10}`,
-        padding: "0 24px", height: 56,
+        padding: "0 32px", height: 80,
         display: "flex", alignItems: "center", justifyContent: "space-between",
-        position: "sticky", top: 0, zIndex: 9999, gap: 12,
+        position: "sticky", top: 0, zIndex: 9999,
       }}>
-        {/* Logo */}
-        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-
-          <div style={{
-            width: 30, height: 30, background: DS.accent24, borderRadius: DS.radSm,
-            display: "flex", alignItems: "center", justifyContent: "center",
-            color: DS.black, flexShrink: 0,
-          }}>
-            <MagnifyingGlass size={16} weight="bold" />
-          </div>
-          
-          <div id="logo-meta">
-            <div style={{ fontSize: 16, fontWeight: 600, color: DS.textOnDark, fontFamily: DS.fontDisplay, letterSpacing: "-0.02em", height: 20 }}>
-              SEO & DESIGN <span style={{ color: DS.accent }}>Audit</span>
+        <div className="brand-shell" aria-label="SEO and Design Audit by Aurum Studio">
+          <div className="brand-lockup">
+            <div className="brand-title">
+              <div className="brand-title-main">SEO &amp; Design <span style={{ color: DS.accent }}>Audit</span></div>
+              <div className="brand-subtitle">AI-powered analysis</div>
             </div>
-
-            <div style={{ fontSize: 11, color: DS.textOnDarkMuted, fontFamily: DS.fontUI, height: 16
-             }}>{t.headerSub}</div>
-
+            <div className="brand-by">By</div>
+            <div className="aurum-logo"><img className="aurum-mini" src="/aurum-mini.png" alt="Aurum Studio" /></div>
           </div>
         </div>
 
@@ -353,18 +362,16 @@ export default function App() {
           border: `1px solid ${DS.accent24}`, borderRadius: DS.radMd,
           padding: 3, gap: 2, flexShrink: 0,
         }}>
-          {[["en","EN"],["es","ES"]].map(([l, flag, label]) => (
-            <button key={l} className="lang-btn" onClick={() => setLang(l)} style={{
-              background: lang === l ? DS.accent : "transparent",
-              color: lang === l ? DS.black : DS.textOnDarkMuted,
+          {["en", "es"].map((language) => (
+            <button key={language} className="lang-btn" onClick={() => setLang(language)} style={{
+              background: lang === language ? DS.accent : "transparent",
+              color: lang === language ? DS.black : DS.textOnDarkMuted,
               border: "none", borderRadius: DS.radSm,
-              padding: "4px 12px", fontSize: 11, fontWeight: 700,
+              padding: "4px 12px", fontSize: 11, fontWeight: 600,
               cursor: "pointer", fontFamily: DS.fontUI,
-              transition: "all .15s", display: "flex", alignItems: "center", gap: 5,
-              letterSpacing: "0.04em",
+              transition: "all .15s", letterSpacing: "0.04em",
             }}>
-              <span style={{ fontSize: 13 }}>{flag}</span>
-              <span>{label}</span>
+              {language.toUpperCase()}
             </button>
           ))}
         </div>
@@ -376,7 +383,7 @@ export default function App() {
         {/* INPUT */}
         <LightCard style={{ padding: "24px 24px 20px", marginBottom: 20 }}>
           <label style={{
-            display: "block", fontSize: 11, fontWeight: 700,
+            display: "block", fontSize: 11, fontWeight: 550,
             color: DS.textSecondary, marginBottom: 10,
             letterSpacing: "0.06em", textTransform: "uppercase",
             fontFamily: DS.fontUI,
@@ -399,7 +406,7 @@ export default function App() {
             <button className="run-btn" onClick={runAudit} disabled={status === "loading"} style={{
               padding: "12px 24px", background: DS.accent, color: DS.black,
               border: "none", borderRadius: DS.radSm,
-              fontSize: 14, fontWeight: 700, cursor: "pointer",
+              fontSize: 14, fontWeight: 580, cursor: "pointer",
               fontFamily: DS.fontUI, transition: "all .2s",
               whiteSpace: "nowrap", flexShrink: 0, letterSpacing: "-0.01em",
             }}>
@@ -522,7 +529,7 @@ export default function App() {
             {/* SEO ISSUES + DESIGN — light + light */}
             <div className="grid-2">
               <LightCard>
-                <SecHead light>{t.secSEO}</SecHead>
+                <SecHead light icon={WarningCircle}>{t.secSEO}</SecHead>
                 {(data.seo_issues || []).map((iss, i, arr) => (
                   <div key={i} style={{
                     padding: "12px 20px", display: "flex", gap: 10, alignItems: "flex-start",
@@ -538,7 +545,7 @@ export default function App() {
               </LightCard>
 
               <LightCard>
-                <SecHead light>{t.secDesign}</SecHead>
+                <SecHead light icon={PaintBrush}>{t.secDesign}</SecHead>
                 {(data.design_improvements || []).map((d2, i, arr) => (
                   <div key={i} style={{
                     padding: "12px 20px",
@@ -601,7 +608,7 @@ export default function App() {
             {/* STRUCTURE + QUICK WINS */}
             <div className="grid-2">
               <LightCard>
-                <SecHead light>{t.secStruct}</SecHead>
+                <SecHead light icon={TreeStructure}>{t.secStruct}</SecHead>
                 {(data.structure_issues || []).map((st, i, arr) => (
                   <div key={i} style={{
                     padding: "12px 20px",
@@ -619,7 +626,7 @@ export default function App() {
               </LightCard>
 
               <LightCard>
-                <SecHead light>{t.secWins}</SecHead>
+                <SecHead light icon={Lightning}>{t.secWins}</SecHead>
                 {(data.quick_wins || []).map((w, i, arr) => (
                   <div key={i} className="win-row" onClick={() => toggleCheck(i)} style={{
                     padding: "12px 20px", cursor: "pointer", transition: "background .12s",
