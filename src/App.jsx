@@ -650,7 +650,7 @@ export default function App() {
             </div>
             <div style={{ background: "#fff", border: `1px solid ${DS.stroke}`, borderRadius: 14 }}>
               <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "18px 24px", borderBottom: `1px solid ${DS.stroke}` }}>
-                <div style={{ width: 32, height: 24, borderRadius: "50%", background: DS.secondary, display: "flex", alignItems: "center", justifyContent: "center" }}><Icon name="pencil" size={13} color="#1D1A1B" /></div>
+                <div style={{ width: 32, height: 32, borderRadius: "50%", background: DS.secondary, display: "flex", alignItems: "center", justifyContent: "center" }}><Icon name="pencil" size={13} color="#1D1A1B" /></div>
                 <div style={{ fontFamily: DS.fontDisplay, fontStyle: "italic", fontSize: 16.5, color: "#1D1A1B" }}>{t.secDesign}</div>
               </div>
               {data.designImprovements.map((d, i) => (
@@ -691,7 +691,7 @@ export default function App() {
           <div style={{ maxWidth: 1200, margin: "0 auto", padding: "56px 48px 0", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
             <div style={{ background: "#fff", border: `1px solid ${DS.stroke}`, borderRadius: 14 }}>
               <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "18px 24px", borderBottom: `1px solid ${DS.stroke}` }}>
-                <div style={{ width: 32, height: 24, borderRadius: "50%", background: DS.secondary, display: "flex", alignItems: "center", justifyContent: "center" }}><Icon name="settings" size={13} color="#1D1A1B" /></div>
+                <div style={{ width: 32, height: 32, borderRadius: "50%", background: DS.secondary, display: "flex", alignItems: "center", justifyContent: "center" }}><Icon name="settings" size={13} color="#1D1A1B" /></div>
                 <div style={{ fontFamily: DS.fontDisplay, fontStyle: "italic", fontSize: 16.5, color: "#1D1A1B" }}>{t.secStruct}</div>
               </div>
               {data.pageStructureRecs.map((r, i) => (
@@ -750,9 +750,9 @@ export default function App() {
           )}
 
           <div style={{ maxWidth: 1200, margin: "0 auto", padding: "80px 48px 0" }}>
-            <div style={{ position: "relative", overflow: "hidden", borderRadius: 12, padding: "40px 30px", textAlign: "center", color: "#fff", backgroundColor: "#398EDFEB" }}>
-              <img src="/nube-izquierda.png" alt="" style={{ position: "absolute", left: -150, width: "42%", pointerEvents: "none", top: -14 }} />
-              <img src="/nube-derecha.png" alt="" style={{ position: "absolute", width: "42%", pointerEvents: "none", left: 634, top: 48 }} />
+            <div style={{ position: "relative", overflow: "hidden", borderRadius: 12, padding: "40px 30px", paddingTop: 64, paddingBottom: 64, textAlign: "center", color: "#fff", backgroundColor: "#398EDFEB" }}>
+              <img src="/nube-izquierda.png" alt="" style={{ position: "absolute", left: -149, width: "42%", pointerEvents: "none", top: 2 }} />
+              <img src="/nube-derecha.png" alt="" style={{ position: "absolute", width: "42%", pointerEvents: "none", left: 633, top: 78 }} />
               <div style={{ fontFamily: DS.fontDisplay, fontStyle: "italic", fontWeight: 400, fontSize: 27, marginBottom: 9, lineHeight: 1.15, position: "relative" }}>{t.ctaTitle}</div>
               <div style={{ position: "relative" }}>
                 <div style={{ fontSize: 13, color: "rgba(255,255,255,0.9)", marginBottom: 24, lineHeight: 1.6, maxWidth: 440, marginLeft: "auto", marginRight: "auto" }}>{t.ctaSubtitle}</div>
