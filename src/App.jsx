@@ -464,18 +464,46 @@ export default function App() {
         @media (max-width:560px){.aurum-benchmark-row{flex-direction:column;align-items:flex-start;gap:6px;}.aurum-benchmark-row .aurum-bm-name{width:auto !important;}.aurum-benchmark-row .aurum-bm-bar{width:100%;}}
         .aurum-cta-actions{display:flex;gap:11px;justify-content:center;flex-wrap:wrap;align-items:center;}
         @media (max-width:480px){.aurum-cta-actions{flex-direction:column;width:100%;}.aurum-cta-actions button{width:100%;}}
+        .aurum-container{max-width:1200px;margin:0 auto;padding-left:48px;padding-right:48px;}
+        @media (max-width:640px){.aurum-container{padding-left:20px;padding-right:20px;}}
+        .aurum-grid-6{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;}
+        @media (max-width:760px){.aurum-grid-6{grid-template-columns:repeat(3,1fr);}}
+        @media (max-width:480px){.aurum-grid-6{grid-template-columns:repeat(2,1fr);}}
+        .aurum-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+        @media (max-width:760px){.aurum-grid-2{grid-template-columns:1fr;}}
+        .aurum-strategic-grid{display:grid;grid-template-columns:1fr 1fr;}
+        .aurum-strategic-cell{border-right:1px solid #2B2829;border-bottom:1px solid #2B2829;}
+        .aurum-strategic-cell:nth-child(2n){border-right:none;}
+        .aurum-strategic-cell:nth-last-child(-n+2){border-bottom:none;}
+        @media (max-width:640px){
+          .aurum-strategic-grid{grid-template-columns:1fr;}
+          .aurum-strategic-cell{border-right:none;}
+          .aurum-strategic-cell:nth-last-child(-n+2){border-bottom:1px solid #2B2829;}
+          .aurum-strategic-cell:last-child{border-bottom:none;}
+        }
+        .aurum-navbar-row{flex-wrap:wrap;row-gap:8px;}
+        .aurum-navbar-attr{display:block;}
+        @media (max-width:480px){.aurum-navbar-attr{display:none;}}
+        .aurum-hero-title{font-size:44px;}
+        @media (max-width:480px){.aurum-hero-title{font-size:30px;}}
+        .aurum-input-card{padding:36px;}
+        @media (max-width:480px){.aurum-input-card{padding:24px;}}
+        .aurum-cta-card{padding:40px 30px;padding-top:64px;padding-bottom:64px;}
+        @media (max-width:600px){.aurum-cta-card{padding-left:20px;padding-right:20px;padding-top:40px;padding-bottom:40px;}}
+        .aurum-cta-cloud{display:block;}
+        @media (max-width:700px){.aurum-cta-cloud{display:none;}}
       `}</style>
 
       {/* NAVBAR */}
       <div style={{ background: DS.black }}>
-        <div style={{ maxWidth: 1200, margin: "0 auto", padding: "18px 48px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+        <div className="aurum-container aurum-navbar-row" style={{ paddingTop: 18, paddingBottom: 18, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-            <div style={{ width: 8, height: 8, borderRadius: "50%", background: DS.accent }} />
+            <div style={{ width: 8, height: 8, borderRadius: "50%", background: DS.accent, flexShrink: 0 }} />
             <div>
               <div style={{ fontSize: 14, fontWeight: 600, color: "#fff", letterSpacing: "-0.01em" }}>SEO &amp; Design Audit</div>
               <div style={{ fontSize: 10, color: "rgba(255,255,255,0.45)" }}>AI-powered analysis</div>
             </div>
-            <div style={{ fontSize: 10, color: "rgba(255,255,255,0.4)", borderLeft: "1px solid rgba(255,255,255,0.15)", paddingLeft: 12, marginLeft: 2 }}>By Aurum Studio</div>
+            <div className="aurum-navbar-attr" style={{ fontSize: 10, color: "rgba(255,255,255,0.4)", borderLeft: "1px solid rgba(255,255,255,0.15)", paddingLeft: 12, marginLeft: 2 }}>By Aurum Studio</div>
           </div>
           <div style={{ display: "flex", gap: 2, background: "rgba(255,255,255,0.08)", borderRadius: 999, padding: 3 }}>
             <button onClick={() => setLang("es")} style={{ background: lang === "es" ? DS.accent : "transparent", color: lang === "es" ? "#1D1A1B" : "rgba(255,255,255,0.5)", border: "none", borderRadius: 999, padding: "5px 12px", fontSize: 11, fontWeight: 600, cursor: "pointer" }}>ES</button>
@@ -495,10 +523,10 @@ export default function App() {
             <div style={{ position: "relative", maxWidth: 600, width: "100%", display: "flex", flexDirection: "column", gap: 12 }}>
               <div style={{ textAlign: "center", position: "relative" }}>
                 <span style={{ display: "inline-block", background: DS.secondary, color: "#5C5658", fontSize: 13, fontWeight: 400, padding: "6px 16px", borderRadius: 999, marginBottom: 20 }}>{t.aiPowered}</span>
-                <div style={{ fontFamily: DS.fontDisplay, fontStyle: "italic", fontWeight: 400, fontSize: 44, lineHeight: 1.1, color: "#1D1A1B", letterSpacing: "-0.01em", marginBottom: 20 }}>{t.heroTitle}</div>
+                <div className="aurum-hero-title" style={{ fontFamily: DS.fontDisplay, fontStyle: "italic", fontWeight: 400, lineHeight: 1.1, color: "#1D1A1B", letterSpacing: "-0.01em", marginBottom: 20 }}>{t.heroTitle}</div>
                 <div style={{ fontSize: 16, lineHeight: 1.6, color: "#5C5658", maxWidth: 440, margin: "0 auto 36px" }}>{t.heroSubtitle}</div>
               </div>
-              <div style={{ background: "#fff", border: `1px solid ${DS.stroke}`, borderRadius: 12, boxShadow: "0 1px 3px rgba(29,26,27,0.06), 0 4px 16px rgba(29,26,27,0.04)", padding: 36 }}>
+              <div className="aurum-input-card" style={{ background: "#fff", border: `1px solid ${DS.stroke}`, borderRadius: 12, boxShadow: "0 1px 3px rgba(29,26,27,0.06), 0 4px 16px rgba(29,26,27,0.04)" }}>
                 <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase", color: "#5C5658", marginBottom: 10 }}>{t.urlLabel}</div>
                 <input
                   type="text" placeholder={t.placeholder} value={url}
@@ -519,7 +547,7 @@ export default function App() {
               </div>
             </div>
           </div>
-          <div style={{ padding: "24px 48px", textAlign: "center", fontSize: 12, color: "#5C5658" }}>{t.homeFooter}</div>
+          <div className="aurum-container" style={{ paddingTop: 24, paddingBottom: 24, textAlign: "center", fontSize: 12, color: "#5C5658" }}>{t.homeFooter}</div>
         </>
       )}
 
@@ -569,7 +597,7 @@ export default function App() {
       {isResultsLike && data && (
         <>
           {view === "partial" && (
-            <div style={{ maxWidth: 1200, margin: "0 auto", padding: "24px 48px 0" }}>
+            <div className="aurum-container" style={{ paddingTop: 24 }}>
               <div style={{ background: "#FDF3E7", border: "1px solid #E86A1C", borderRadius: 8, padding: "14px 18px", display: "flex", gap: 12, alignItems: "flex-start" }}>
                 <div style={{ flexShrink: 0, marginTop: 1 }}><Icon name="triangle-alert" size={20} color="#E86A1C" /></div>
                 <div>
@@ -580,7 +608,7 @@ export default function App() {
             </div>
           )}
 
-          <div style={{ maxWidth: 1200, margin: "0 auto", padding: "32px 48px 0" }}>
+          <div className="aurum-container" style={{ paddingTop: 32 }}>
             <div style={{ background: "#fff", border: `1px solid ${DS.stroke}`, borderRadius: 12, boxShadow: "0 1px 3px rgba(29,26,27,0.06), 0 4px 16px rgba(29,26,27,0.04)", padding: "24px 28px", display: "flex", alignItems: "flex-end", gap: 16, flexWrap: "wrap" }}>
               <div style={{ flex: 1, minWidth: 220 }}>
                 <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase", color: "#5C5658", marginBottom: 8 }}>{t.urlLabel}</div>
@@ -594,11 +622,11 @@ export default function App() {
             </div>
           </div>
 
-          <div style={{ maxWidth: 1200, margin: "0 auto", padding: "32px 48px 0" }}>
+          <div className="aurum-container" style={{ paddingTop: 32 }}>
             <div style={{ background: DS.surfaceDark, borderRadius: 12, padding: "28px 30px", color: "#fff", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 28, flexWrap: "wrap" }}>
               <div>
                 <div style={{ fontSize: 9.5, letterSpacing: "0.11em", textTransform: "uppercase", color: "rgba(255,255,255,0.45)" }}>{t.auditComplete}</div>
-                <div style={{ fontFamily: DS.fontDisplay, fontStyle: "italic", fontWeight: 400, fontSize: 27, color: "#fff", marginTop: 9, letterSpacing: "-0.01em" }}>{data.site}</div>
+                <div style={{ fontFamily: DS.fontDisplay, fontStyle: "italic", fontWeight: 400, fontSize: 27, color: "#fff", marginTop: 9, letterSpacing: "-0.01em", wordBreak: "break-word" }}>{data.site}</div>
                 <div style={{ fontSize: 12, color: "rgba(255,255,255,0.45)", marginTop: 7 }}>{t.platform}: <span style={{ color: "#fff", fontWeight: 600 }}>{data.platform || "—"}</span></div>
               </div>
               <div style={{ display: "flex", alignItems: "center", gap: 18, flexShrink: 0, background: "#232021", border: `1px solid ${scoreColor}`, borderRadius: 11, padding: "13px 20px" }}>
@@ -616,7 +644,7 @@ export default function App() {
             </div>
           </div>
 
-          <div style={{ maxWidth: 1200, margin: "0 auto", padding: "32px 48px 0", display: "grid", gridTemplateColumns: "repeat(6,1fr)", gap: 12 }}>
+          <div className="aurum-container aurum-grid-6" style={{ paddingTop: 32 }}>
             {data.statusChips.map(sc => {
               const pill = STATUS_PILL[sc.status] || STATUS_PILL.good;
               return (
@@ -629,7 +657,7 @@ export default function App() {
             })}
           </div>
 
-          <div style={{ maxWidth: 1200, margin: "0 auto", padding: "56px 48px 0", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
+          <div className="aurum-container aurum-grid-2" style={{ paddingTop: 56 }}>
             <div style={{ background: "#fff", border: `1px solid ${DS.stroke}`, borderRadius: 14 }}>
               <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "18px 24px", borderBottom: `1px solid ${DS.stroke}` }}>
                 <div style={{ width: 32, height: 32, borderRadius: "50%", background: DS.secondary, display: "flex", alignItems: "center", justifyContent: "center" }}><Icon name="info" size={13} color="#1D1A1B" /></div>
@@ -663,32 +691,27 @@ export default function App() {
             </div>
           </div>
 
-          <div style={{ maxWidth: 1200, margin: "0 auto", padding: "56px 48px 0" }}>
+          <div className="aurum-container" style={{ paddingTop: 56 }}>
             <div style={{ background: DS.black, borderRadius: 14, overflow: "hidden" }}>
               <div style={{ display: "flex", alignItems: "center", gap: 14, padding: "22px 26px", borderBottom: "1px solid #2B2829" }}>
                 <span style={{ display: "inline-flex", alignItems: "center", gap: 5, background: DS.accent, color: "#1D1A1B", fontSize: 10, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase", padding: "5px 10px", borderRadius: 999 }}><Icon name="zap" size={11} color="#1D1A1B" /> {t.convBadge}</span>
                 <div style={{ fontFamily: DS.fontDisplay, fontStyle: "italic", fontSize: 18, color: "#fff" }}>{t.convTitle}</div>
               </div>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}>
-                {data.strategic.map((sg, i) => {
-                  const numRows = Math.ceil(data.strategic.length / 2);
-                  const row = Math.floor(i / 2);
-                  const col = i % 2;
-                  return (
-                    <div key={i} style={{ padding: "22px 26px", display: "flex", gap: 14, borderBottom: row < numRows - 1 ? "1px solid #2B2829" : "none", borderRight: col === 0 ? "1px solid #2B2829" : "none" }}>
-                      <div style={{ flexShrink: 0, width: 22, height: 22, borderRadius: 5, background: DS.accent, color: "#1D1A1B", fontSize: 11, fontWeight: 700, display: "flex", alignItems: "center", justifyContent: "center" }}>{sg.order || i + 1}</div>
-                      <div>
-                        <div style={{ fontSize: 13.5, fontWeight: 700, color: "#fff", marginBottom: 5, lineHeight: 1.4 }}>{sg.title}</div>
-                        <div style={{ fontSize: 12.5, color: "#918D8B", lineHeight: 1.55 }}>{sg.description}</div>
-                      </div>
+              <div className="aurum-strategic-grid">
+                {data.strategic.map((sg, i) => (
+                  <div key={i} className="aurum-strategic-cell" style={{ padding: "22px 26px", display: "flex", gap: 14 }}>
+                    <div style={{ flexShrink: 0, width: 22, height: 22, borderRadius: 5, background: DS.accent, color: "#1D1A1B", fontSize: 11, fontWeight: 700, display: "flex", alignItems: "center", justifyContent: "center" }}>{sg.order || i + 1}</div>
+                    <div>
+                      <div style={{ fontSize: 13.5, fontWeight: 700, color: "#fff", marginBottom: 5, lineHeight: 1.4 }}>{sg.title}</div>
+                      <div style={{ fontSize: 12.5, color: "#918D8B", lineHeight: 1.55 }}>{sg.description}</div>
                     </div>
-                  );
-                })}
+                  </div>
+                ))}
               </div>
             </div>
           </div>
 
-          <div style={{ maxWidth: 1200, margin: "0 auto", padding: "56px 48px 0", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
+          <div className="aurum-container aurum-grid-2" style={{ paddingTop: 56 }}>
             <div style={{ background: "#fff", border: `1px solid ${DS.stroke}`, borderRadius: 14 }}>
               <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "18px 24px", borderBottom: `1px solid ${DS.stroke}` }}>
                 <div style={{ width: 32, height: 32, borderRadius: "50%", background: DS.secondary, display: "flex", alignItems: "center", justifyContent: "center" }}><Icon name="settings" size={13} color="#1D1A1B" /></div>
@@ -731,7 +754,7 @@ export default function App() {
           </div>
 
           {hasBenchmark && (
-            <div style={{ maxWidth: 1200, margin: "0 auto", padding: "56px 48px 0" }}>
+            <div className="aurum-container" style={{ paddingTop: 56 }}>
               <div style={{ fontSize: 13, textTransform: "uppercase", letterSpacing: "0.08em", color: "#474244", fontWeight: 500, marginBottom: 6 }}>{t.benchmarkTitle}</div>
               <div style={{ fontSize: 12, color: "#5C5658", marginBottom: 24 }}>{t.benchmarkSubtitle}</div>
               <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
@@ -749,10 +772,10 @@ export default function App() {
             </div>
           )}
 
-          <div style={{ maxWidth: 1200, margin: "0 auto", padding: "80px 48px 0" }}>
-            <div style={{ position: "relative", overflow: "hidden", borderRadius: 12, padding: "40px 30px", paddingTop: 64, paddingBottom: 64, textAlign: "center", color: "#fff", backgroundColor: "#398EDFEB" }}>
-              <img src="/nube-izquierda.png" alt="" style={{ position: "absolute", left: -149, width: "42%", pointerEvents: "none", top: 2 }} />
-              <img src="/nube-derecha.png" alt="" style={{ position: "absolute", width: "42%", pointerEvents: "none", left: 633, top: 78 }} />
+          <div className="aurum-container" style={{ paddingTop: 80 }}>
+            <div className="aurum-cta-card" style={{ position: "relative", overflow: "hidden", borderRadius: 12, textAlign: "center", color: "#fff", backgroundColor: "#398EDFEB" }}>
+              <img className="aurum-cta-cloud" src="/nube-izquierda.png" alt="" style={{ position: "absolute", left: -149, width: "42%", pointerEvents: "none", top: 2 }} />
+              <img className="aurum-cta-cloud" src="/nube-derecha.png" alt="" style={{ position: "absolute", width: "42%", pointerEvents: "none", left: 633, top: 78 }} />
               <div style={{ fontFamily: DS.fontDisplay, fontStyle: "italic", fontWeight: 400, fontSize: 27, marginBottom: 9, lineHeight: 1.15, position: "relative" }}>{t.ctaTitle}</div>
               <div style={{ position: "relative" }}>
                 <div style={{ fontSize: 13, color: "rgba(255,255,255,0.9)", marginBottom: 24, lineHeight: 1.6, maxWidth: 440, marginLeft: "auto", marginRight: "auto" }}>{t.ctaSubtitle}</div>
@@ -784,7 +807,7 @@ export default function App() {
             </div>
           </div>
 
-          <div style={{ maxWidth: 1200, margin: "0 auto", padding: 48, marginTop: 16, borderTop: `1px solid ${DS.stroke}`, display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 12 }}>
+          <div className="aurum-container" style={{ paddingTop: 48, paddingBottom: 48, marginTop: 16, borderTop: `1px solid ${DS.stroke}`, display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 12 }}>
             <div style={{ fontSize: 12, color: "#5C5658" }}>{t.methodology}</div>
             <div style={{ fontSize: 12, color: "#5C5658" }}>v3.0</div>
           </div>
